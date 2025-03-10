@@ -20,7 +20,13 @@ export class TodoController extends StateController<TodoState> {
             filter: 'all',
             searchQuery: ''
         });
+        // Automatically bind all methods to this instance
+        this.bindMethods(this);
+
+        // Automatically subscribe methods that start with 'on'
+        this.autoSubscribeOnMethods(this);
     }
+
 
     useTodoStats = () => {
         const { todos } = this.useState(['todos']);
@@ -93,6 +99,15 @@ export class TodoController extends StateController<TodoState> {
             return { todos: filtered, filter };
         }, [todos, filter, searchQuery])
     };
+
+    // Subscribe to changes in the todo list
+    onTodosChange = () => {
+        return this.subscribeToKeys(['todos', 'filter'], (changedKeys) => {
+            console.log('These keys changed:', changedKeys);
+            // Update UI or perform other actions when filter or search changes
+        });
+    };
+
 }
 
 export const todoController = new TodoController();
