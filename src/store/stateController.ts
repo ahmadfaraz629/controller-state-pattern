@@ -174,7 +174,7 @@ export class StateController<T extends Record<string, any>> {
      * @param listener Callback function that receives the changed keys
      * @returns Unsubscribe function to remove all listeners
      */
-    subscribeToKeys(keys: (keyof T)[], listener: (changedKeys: (keyof T)[]) => void): () => void {
+    subscribeToKeys(keys: (keyof T)[], listener: (changedKeys: Partial<T>, allKeys: Partial<T> ) => void): () => void {
         // Validate that this method is being called from a method that starts with 'on'
         const stack = new Error().stack;
         if (stack) {
@@ -194,7 +194,7 @@ export class StateController<T extends Record<string, any>> {
             if (timeout) clearTimeout(timeout);
             timeout = setTimeout(() => {
                 if (changedKeysSet.size > 0) {
-                    listener(Array.from(changedKeysSet));
+                    listener(this.getValues(Array.from(changedKeysSet)), this.getValues(keys));
                     changedKeysSet.clear();
                 }
             }, 0);

@@ -102,9 +102,9 @@ export class TodoController extends StateController<TodoState> {
 
     // Subscribe to changes in the todo list
     onTodosChange = () => {
-        return this.subscribeToKeys(['todos', 'filter'], (changedKeys) => {
+        return this.subscribeToKeys(['todos', 'filter'], (changedKeys, allKeys) => {
             console.log('These keys changed:', changedKeys);
-            // Update UI or perform other actions when filter or search changes
+            console.log('These all keys :', allKeys);
         });
     };
 
